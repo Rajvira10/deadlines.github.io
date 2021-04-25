@@ -11,7 +11,13 @@ const button = document.querySelector('.btn');
 const dark = document.querySelector('img');
 
 
-let tasks = [];
+const localStorageTasks = JSON.parse(
+    localStorage.getItem('tasks')
+);
+let tasks =
+    localStorage.getItem('tasks') !== null ? localStorageTasks : [];
+
+
 
 const modeChange = ()=>{
     const img2 = dark.src;
@@ -54,7 +60,9 @@ const addTask = ()=>{
     tasks.push(task);
     text.value = '';
     date.value = '';
+    updateLocalStorage();
     addTaskInHTML(task);
+    
 }
 const removeTask = (id)=>{
     let sum = 0;
@@ -69,6 +77,7 @@ const removeTask = (id)=>{
     });
 
     footer.textContent = `${sum} Tasks Left`;
+    updateLocalStorage();
     init();
 };
 
@@ -93,6 +102,9 @@ const addTaskInHTML = (task)=>{
         })">x</button>
     `;
     list.appendChild(item);
+}
+function updateLocalStorage() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 const init = ()=>{
